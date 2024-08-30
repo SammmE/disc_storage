@@ -37,7 +37,7 @@ pub enum Mode {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Storage {
     pub name: String,
-    pub files: Vec<String>,
+    pub files: Vec<PathBuf>,
 }
 
 fn get_config_dir() -> PathBuf {

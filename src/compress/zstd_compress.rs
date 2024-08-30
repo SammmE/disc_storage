@@ -1,4 +1,4 @@
-use std::{fs::File, path::PathBuf};
+use std::{fs::File, path::PathBuf, sync::mpsc};
 
 use zstd::stream::{copy_decode, copy_encode};
 
@@ -12,6 +12,7 @@ impl Compress for ZstdCompress {
         output: PathBuf,
         files: Vec<PathBuf>,
         level: i32,
+        updater: mpsc::Sender<(f32, f32)>,
     ) -> Result<(), std::io::Error> {
         make_tar(
             output.clone().parent().unwrap().join("archive.tar"),

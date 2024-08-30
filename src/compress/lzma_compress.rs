@@ -1,10 +1,10 @@
-use std::{fs::File, path::PathBuf};
+use std::{fs::File, path::PathBuf, sync::mpsc};
 
 use xz2::read::{XzDecoder, XzEncoder};
 
 use super::{make_tar, Compress};
 
-struct LzmaCompress;
+pub struct LzmaCompress;
 
 impl Compress for LzmaCompress {
     fn compress(
@@ -12,6 +12,7 @@ impl Compress for LzmaCompress {
         output: PathBuf,
         files: Vec<PathBuf>,
         level: i32,
+        updater: mpsc::Sender<(f32, f32)>,
     ) -> Result<(), std::io::Error> {
         make_tar(
             output.clone().parent().unwrap().join("archive.tar"),

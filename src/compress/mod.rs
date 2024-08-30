@@ -1,4 +1,4 @@
-use std::{fs::File, path::PathBuf};
+use std::{fs::File, path::PathBuf, sync::mpsc};
 
 use serde::{Deserialize, Serialize};
 use tar::Builder;
@@ -12,12 +12,13 @@ pub enum CompressType {
     Zstd,
 }
 
-trait Compress {
+pub trait Compress {
     fn compress(
         &self,
         output: PathBuf,
         files: Vec<PathBuf>,
         level: i32,
+        updater: mpsc::Sender<(f32, f32)>,
     ) -> Result<(), std::io::Error>;
     fn decompress(&self, input: PathBuf, output: PathBuf) -> Result<(), std::io::Error>;
 }
